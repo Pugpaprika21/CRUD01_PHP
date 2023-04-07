@@ -215,3 +215,18 @@ if (!function_exists('write_log')) {
         throw new Exception("Write log error : {$file}");
     }
 }
+
+///////////////////////// REQUEST /////////////////////
+
+if (!function_exists('anyRequest')) {
+
+    function anyRequest() {
+        return array(
+            'post' => $_POST,
+            'get' => $_GET,
+            'files' => $_FILES,
+            'any' =>  $_REQUEST,
+            'client' => json_decode(file_get_contents('php://input'), true)
+        );
+    }
+}

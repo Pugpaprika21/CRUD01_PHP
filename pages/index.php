@@ -2,14 +2,6 @@
 
 require __DIR__ . '../../src/include/include.php';
 
-$users = db_excQuery("SELECT user_id, user_name, user_pass, user_status, create_date_at, create_time_at FROM user_tb ORDER BY user_id DESC");
-$users_json = json_encode($users);
-
-$user_id = isset($_SESSION['user_edit_data']['user_data']['user_id']) ? $_SESSION['user_edit_data']['user_data']['user_id'] : "";
-$username = isset($_SESSION['user_edit_data']['user_data']['user_name']) ? $_SESSION['user_edit_data']['user_data']['user_name'] : "";
-$userpass = isset($_SESSION['user_edit_data']['user_data']['user_pass']) ? $_SESSION['user_edit_data']['user_data']['user_pass'] : "";
-$status_data = isset($_SESSION['user_edit_data']['status_data']) ? $_SESSION['user_edit_data']['status_data'] : "";
-
 ?>
 
 
@@ -74,22 +66,20 @@ $status_data = isset($_SESSION['user_edit_data']['status_data']) ? $_SESSION['us
                             <div class="card-header">
                                 create user
                             </div>
-                            <form action="<?= ($status_data == 'Y') ? url_where("../process/edit_user.php", ['user_id' => $user_id, 'status_edit' => 'Y']) : url_where('../process/save_user.php') ?>" method="post">
+                            <form id="form-submit-create-users" method="post">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
                                         <div class="input-group mb-2 mt-2">
-                                            <!-- <span class="input-group-text" id="basic-addon1">@</span> -->
-                                            <input type="text" class="form-control" id="user_name" name="user_name" value="<?= $username ?>" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                            <input type="text" class="form-control" id="user_name" name="user_name" value="" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
                                         </div>
                                     </li>
                                     <li class="list-group-item">
                                         <div class="input-group mb-2 mt-2">
-                                            <!-- <span class="input-group-text" id="basic-addon1">@</span> -->
-                                            <input type="text" class="form-control" id="user_pass" name="user_pass" value="<?= $userpass ?>" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                                            <input type="text" class="form-control" id="user_pass" name="user_pass" value="" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
                                         </div>
                                     </li>
                                     <li class="list-group-item">
-                                        <button class="btn btn-primary w-100" id="btn_add" name="btn_add" value="create_user" type="submit">Save</button>
+                                        <button class="btn btn-primary w-100" type="submit">Save</button>
                                     </li>
                                 </ul>
                             </form>
@@ -109,25 +99,8 @@ $status_data = isset($_SESSION['user_edit_data']['status_data']) ? $_SESSION['us
                                     <td>action</td>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php $i = 1;
-                                foreach ($users as $k => $row) : ?>
-
-                                    <?php if (count($users) > 0) : ?>
-                                        <tr>
-                                            <td><?= $i++ ?></td>
-                                            <td><?= $row['user_name'] ?></td>
-                                            <td><?= $row['user_pass'] ?></td>
-                                            <td><?= dt_th($row['create_date_at'] ." ". $row['create_time_at']) ?></td>
-                                            <td>
-                                                <a class="btn btn-custom-edit" id="edit_<?= $row['user_id'] ?>" href="<?= url_where('../process/edit_user.php', ['user_id' => $row['user_id']]) ?>" role="button">Edit</a>
-                                                &nbsp;
-                                                <a class="btn btn-custom-delete" id="delete_<?= $row['user_id'] ?>" href="<?= url_where('../process/delete_user.php', ['user_id' => $row['user_id']]) ?>" role="button">Delete</a>
-                                            </td>
-                                        </tr>
-                                    <?php endif; ?>
-
-                                <?php endforeach; ?>
+                            <tbody id="show-users">
+                          
                             </tbody>
                         </table>
                     </div>
@@ -137,7 +110,6 @@ $status_data = isset($_SESSION['user_edit_data']['status_data']) ? $_SESSION['us
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    <script src="<?= JS_VUE ?>"></script>
     <script src="<?= JS_SWL ?>"></script>
     <script src="<?= JS_AXIOS ?>"></script>
 
@@ -146,18 +118,63 @@ $status_data = isset($_SESSION['user_edit_data']['status_data']) ? $_SESSION['us
 </html>
 
 <script>
-    const {
-        createApp
-    } = Vue
 
-    createApp({
-        data() {
-            return {
+    const formCreateUsers = document.querySelector('#form-submit-create-users');
 
+    formCreateUsers.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const user_name = document.getElementById("user_name").value;
+        const user_pass = document.getElementById("user_pass").value;
+
+        if (user_name == '') return;
+        if (user_pass == '') return;
+
+        axios.post("<?= url_where('../process/save_user.php', array('action' => 'insert')) ?>", {
+            user_name: user_name,
+            user_pass: user_pass,
+            action_: "insert"
+        }).then(res => {
+
+            if (res.data.status == 200) {
+                fetchUsers();
+                console.log(res.data)
             }
-        },
-        mounted() {
+    
+        }).catch(err => {
+            console.error(err); 
+        })
+    });
 
-        },
-    }).mount('#app-crud01')
+    function fetchUsers() {
+        axios.get("<?= url_where('../process/show_users.php', array('action' => 'get_users')) ?>").then(res => {
+            let html = "";
+            let row = 0;
+            if (res.data.length > 0) {
+                res.data.forEach(data => {
+                    html += `
+                        <tr>
+                            <td>${row + 1}</td>
+                            <td>${data.user_name}</td>
+                            <td>${data.user_pass}</td>
+                            <td>${data.create_date_at}</td>
+                            <td>
+                                <a class="btn btn-custom-edit" id="edit_${data.user_id}" href="../process/edit_user.php?user_id=${data.user_id}" role="button">Edit</a>
+                                    &nbsp;
+                                <a class="btn btn-custom-delete" id="delete_${data.user_id}" href="../process/delete_user.php?user_id=${data.user_id}" role="button">Delete</a>
+                            </td>
+                        </tr>
+                    `;
+                    document.getElementById("show-users").innerHTML = html;
+                    row++;
+                });
+            }
+        }).catch(err => {
+            console.error(err); 
+        })
+    }
+
+    (function() {
+        fetchUsers();
+    })();
 </script>
