@@ -1,9 +1,4 @@
-<?php
-
-require __DIR__ . '../../src/include/include.php';
-
-?>
-
+<?php require __DIR__ . '../../src/include/include.php'; ?>
 
 <!doctype html>
 <html lang="en">
@@ -135,11 +130,19 @@ require __DIR__ . '../../src/include/include.php';
             user_pass: user_pass,
             action_: "insert"
         }).then(res => {
-
             if (res.data.status == 200) {
-                fetchUsers();
-                console.log(res.data)
-            }
+                Swal.fire({
+                    icon: 'success',
+                    text: 'Data addition successful.',
+                }).then(res => {
+                    fetchUsers();
+                    console.log(res.data)
+                });
+                return;
+            } 
+
+            Swal.fire({icon: 'error', text: 'cannot add data.'});
+            return;
     
         }).catch(err => {
             console.error(err); 
