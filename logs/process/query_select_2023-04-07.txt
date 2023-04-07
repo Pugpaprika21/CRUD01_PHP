@@ -70,3 +70,8 @@
 [2023-04-07 21:40:08] SELECT * FROM user_tb 
 [2023-04-07 21:40:22] SELECT * FROM user_tb WHERE user_id = '530'
 [2023-04-07 21:40:22] SELECT * FROM user_tb 
+[2023-04-07 21:41:46] SELECT * FROM user_tb ORDER BY user_id DESC
+[2023-04-07 21:41:50] SELECT * FROM user_tb WHERE user_id = '531'
+[2023-04-07 21:41:50] SELECT * FROM user_tb ORDER BY user_id DESC
+[2023-04-07 21:42:00] SELECT * FROM user_tb WHERE user_id = '532'
+[2023-04-07 21:42:00] SELECT * FROM user_tb ORDER BY user_id DESC
