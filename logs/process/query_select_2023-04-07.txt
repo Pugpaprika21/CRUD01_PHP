@@ -1,0 +1,1 @@
+[2023-04-07 20:35:37] SELECT user_id, user_name, user_pass, user_status, create_date_at, create_time_at FROM user_tb ORDER BY user_id DESC
