@@ -189,6 +189,8 @@ if (!function_exists('ipAddr')) {
     }
 }
 
+/////////////////////////////////////////// WRITE LOG ////////////////////////////////////////
+
 if (!function_exists('write_log')) {
 
     /**
@@ -197,7 +199,7 @@ if (!function_exists('write_log')) {
      * @param string $message
      * @param string $file
      * @param bool $stop_write
-     * @return mixed
+     * @return void
      */
     function write_log($message, $file = 'log.txt', $stop_write = false)
     {
@@ -220,11 +222,46 @@ if (!function_exists('write_log')) {
     }
 }
 
+if (!function_exists('write_json')) {
+
+    /**
+     * #write_json("oooo", "../logs/json/data.json");
+     * 
+     * @param string $message
+     * @param string $file
+     * @param boolean $stop_write
+     * @return void
+     */
+    function write_json(string $message, string $file = 'log.json', $stop_write = false)
+    {
+        if ($stop_write == false) return;
+
+        $log = function () use ($message, $file) {
+            $time = date_time('DT');
+            $log = "$message";
+            return file_put_contents($file, $log);
+        };
+
+        if (file_exists($file)) {
+            $log();
+            return;
+        } else {
+            $log();
+            return;
+        }
+        throw new Exception("Write log error : {$file}");
+    }
+}
+
 ///////////////////////// REQUEST /////////////////////
 
 if (!function_exists('anyRequest')) {
 
-    function anyRequest() {
+    /**
+     * @return array
+     */
+    function anyRequest()
+    {
         return array(
             'POST' => $_POST,
             'GET' => $_GET,
@@ -232,5 +269,68 @@ if (!function_exists('anyRequest')) {
             'ANY' =>  $_REQUEST,
             'CLIENT' => json_decode(file_get_contents('php://input'), true)
         );
+    }
+}
+
+///////////////////////// downloadFile /////////////////////
+if (!function_exists('download_file')) {
+
+    /**
+     * #download_file('../../public/img/logo.PNG');
+     *
+     * @param string $file_path
+     * @return void
+     */
+    function download_file($file_path)
+    {
+        if (file_exists($file_path)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file_path));
+            readfile($file_path);
+            return;
+        }
+        throw new Exception("File not found : {$file_path}");
+    }
+}
+
+/////////////////////// number to thai ////////////////////////////
+
+if (!function_exists('thai_number')) {
+
+    /**
+     * @param string|int $number
+     * @return void
+     */
+    function thai_number($number)
+    {
+        $thai_number_array = array(
+            0 => '๐',
+            1 => '๑',
+            2 => '๒',
+            3 => '๓',
+            4 => '๔',
+            5 => '๕',
+            6 => '๖',
+            7 => '๗',
+            8 => '๘',
+            9 => '๙'
+        );
+
+        $thai_number = '';
+        $number = intval($number);
+        $length = strlen($number);
+
+        for ($i = 0; $i < $length; $i++) {
+            $digit = $number % 10;
+            $thai_number = $thai_number_array[$digit] . $thai_number;
+            $number = intval($number / 10);
+        }
+
+        return $thai_number;
     }
 }

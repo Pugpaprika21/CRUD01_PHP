@@ -36,6 +36,19 @@
             background-color: #CA5F44;
             border-color: #CA5F44;
         }
+
+        .btn-custom-json {
+            padding: 6px 8px;
+            font-size: 10px;
+            color: #303030;
+            background-color: #F3D607;
+            border-color: #F3D607;
+        }
+
+        .btn-custom-json:hover {
+            background-color: #F3E791;
+            border-color: #F3E791;
+        }
     </style>
 </head>
 
@@ -45,7 +58,7 @@
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                Bootstrap
+                CRUD
             </a>
         </div>
     </nav>
@@ -82,6 +95,12 @@
                     </div>
                 </div>
                 <div class="col-md-8 col-sm-8">
+
+                    <!--  -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a class="btn btn-custom-json mb-2" id="load-json" href="<?= url_where('../process/get_file_json.php', ['action' => 'load_json']) ?>" role="button">json</a>
+                    </div>
+
                     <!-- table-users -->
                     <div class="table-responsive table-users">
                         <table class="table align-middle table-bordered text-center">
@@ -171,7 +190,7 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit User</h1>
                                                 <button type="button" class="btn-close" id="btn-close-edit-${data.user_id}" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -248,7 +267,13 @@
         const resp = await axios.get(delete_url);
 
         if (resp.status == 200) {
-            fetchUsers();
+            Swal.fire({
+                icon: 'success',
+                text: 'Data is delete.',
+            }).then(res => {
+                fetchUsers();
+                return;
+            });
         }
     }
 
