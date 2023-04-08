@@ -223,11 +223,11 @@ if (!function_exists('anyRequest')) {
 
     function anyRequest() {
         return array(
-            'post' => $_POST,
-            'get' => $_GET,
-            'files' => $_FILES,
-            'any' =>  $_REQUEST,
-            'client' => json_decode(file_get_contents('php://input'), true)
+            'POST' => $_POST,
+            'GET' => $_GET,
+            'FILES' => $_FILES,
+            'ANY' =>  $_REQUEST,
+            'CLIENT' => json_decode(file_get_contents('php://input'), true)
         );
     }
 }

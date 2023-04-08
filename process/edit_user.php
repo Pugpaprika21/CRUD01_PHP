@@ -8,7 +8,7 @@ $http->headers('Access-Control-Allow-Origin: *')
      ->headers('Access-Control-Max-Age:', '86400')
      ->headers('Content-type: application/json charset=utf-8');
 
-$data = $request['get'];
+$data = $request['GET'];
 
 if ($data['action'] == 'edit_user_data') {
     $user_id = str($data['user_id']);

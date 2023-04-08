@@ -8,9 +8,9 @@ $http->headers('Access-Control-Allow-Origin: *')
      ->headers('Access-Control-Max-Age:', '86400')
      ->headers('Content-type: application/json charset=utf-8');
 
-$data = $request['client'];
+$data = $request['CLIENT'];
 
-if ($request['get']['action'] == 'edit_user_data') {
+if ($request['GET']['action'] == 'edit_user_data') {
 
     $update['user_name'] = str($data['user_name']);
     $update['user_pass'] = str($data['user_pass']);

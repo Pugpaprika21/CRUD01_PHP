@@ -2,7 +2,7 @@
 
 require __DIR__ . '../../src/include/include.php';
 
-$data = $request['client'];
+$data = $request['CLIENT'];
 
 if (str($data['action']) == 'insert') {
 
