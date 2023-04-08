@@ -36,7 +36,11 @@ define('U_IP_ADDR', ipAddr());
 
 define('U_SYS_TOKEN', token_generator('CURD01'));
 
+////////////////////////// REQUEST //////////////////////////
+
 $request = anyRequest();
+
+$http = new Http();
 
 
 

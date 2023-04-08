@@ -10,13 +10,13 @@ $http->headers('Access-Control-Allow-Origin: *')
 
 $data = $request['get'];
 
-if ($data['action'] == 'edit_user_data') {
-    $user_id = str($data['user_id']);
+// if ($data['action'] == 'edit_user_data') {
+//     $user_id = str($data['user_id']);
 
-    $user_edit_data = db_select('user_tb', '*', "user_id = '{$user_id}'");
-    echo json_encode($user_edit_data);
-    exit;
-}
+//     $user_edit_data = db_select('user_tb', '*', "user_id = '{$user_id}'");
+//     echo json_encode($user_edit_data);
+//     exit;
+// }
 
 echo json_encode($data);
 exit;

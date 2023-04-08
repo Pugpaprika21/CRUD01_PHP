@@ -4,7 +4,7 @@ require __DIR__ . '../../src/include/include.php';
 
 $data = $request['client'];
 
-if (str($data['action_']) == 'insert') {
+if (str($data['action']) == 'insert') {
 
     $create['user_name'] = str($data['user_name']);
     $create['user_pass'] = str($data['user_pass']);

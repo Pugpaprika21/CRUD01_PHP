@@ -61,7 +61,7 @@
                             <div class="card-header">
                                 create user
                             </div>
-                            <form id="form-submit-create-users" method="post">
+                            <form id="form-submit-create-users" action="" method="post">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
                                         <div class="input-group mb-2 mt-2">
@@ -95,7 +95,7 @@
                                 </tr>
                             </thead>
                             <tbody id="show-users">
-                          
+
                             </tbody>
                         </table>
                     </div>
@@ -113,7 +113,6 @@
 </html>
 
 <script>
-
     const formCreateUsers = document.querySelector('#form-submit-create-users');
 
     formCreateUsers.addEventListener('submit', (e) => {
@@ -128,7 +127,7 @@
         axios.post("<?= url_where('../process/save_user.php', array('action' => 'insert')) ?>", {
             user_name: user_name,
             user_pass: user_pass,
-            action_: "insert"
+            action: "insert"
         }).then(res => {
             if (res.data.status == 200) {
                 Swal.fire({
@@ -136,16 +135,18 @@
                     text: 'Data addition successful.',
                 }).then(res => {
                     fetchUsers();
-                    console.log(res.data)
                 });
                 return;
-            } 
+            }
 
-            Swal.fire({icon: 'error', text: 'cannot add data.'});
+            Swal.fire({
+                icon: 'error',
+                text: 'cannot add data.'
+            });
             return;
-    
+
         }).catch(err => {
-            console.error(err); 
+            console.error(err);
         })
     });
 
@@ -162,7 +163,7 @@
                             <td>${data.user_pass}</td>
                             <td>${data.create_date_at}</td>
                             <td>
-                                <a class="btn btn-custom-edit" id="edit_${data.user_id}" href="../process/edit_user.php?user_id=${data.user_id}" role="button">Edit</a>
+                                <a class="btn btn-custom-edit" id="edit_${data.user_id}" onclick="editUserDataId(${data.user_id})" role="button">Edit</a>
                                     &nbsp;
                                 <a class="btn btn-custom-delete" id="delete_${data.user_id}" href="../process/delete_user.php?user_id=${data.user_id}" role="button">Delete</a>
                             </td>
@@ -173,8 +174,19 @@
                 });
             }
         }).catch(err => {
-            console.error(err); 
+            console.error(err);
         })
+    }
+
+    async function editUserDataId(user_id) {
+        let edit_url = "<?= url_where('../process/edit_user.php', array('action' => 'edit_user_data', 'user_id' => '_user_id')) ?>".replace("_user_id", user_id);
+        let resp = await axios.get(edit_url);
+
+        if (resp.data.user_id != "") {
+            let actionEdit = document.getElementById("form-submit-create-users");
+            actionEdit.action = "../process/edit_user_data.php";
+            console.log(actionEdit);
+        }
     }
 
     (function() {

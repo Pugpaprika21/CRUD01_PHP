@@ -242,3 +242,9 @@ class Http extends EnumHttpStatus
 // $post_response = Service::post($post_url, $post_data);
 
 // $service->responseToClient($post_response);
+
+// $service->headers('Access-Control-Allow-Origin: *')
+//         ->headers('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, PATCH, OPTIONS')
+//         ->headers('Access-Control-Allow-Headers: *')
+//         ->headers('Access-Control-Max-Age:', '86400')
+//         ->headers('Content-type: application/json charset=utf-8');

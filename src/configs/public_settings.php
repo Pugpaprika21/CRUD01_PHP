@@ -26,7 +26,7 @@ return [
         'FETCH' => '<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.2/fetch.min.js" integrity="sha512-1Gn7//DzfuF67BGkg97Oc6jPN6hqxuZXnaTpC9P5uw8C6W4yUNj5hoS/APga4g1nO2X6USBb/rXtGzADdaVDeA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>',
         'AXIOS' => "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js?t={$t}",
         'AXIOS_UNPKG' => '<script src="https://unpkg.com/axios/dist/axios.min.js"></script>',
-        'SWL_ALERT' => "https://cdn.jsdelivr.net/npm/sweetalert2@11?={$t}",
+        'SWL_ALERT' => "https://cdn.jsdelivr.net/npm/sweetalert2@11?t={$t}",
         'SWL_ALERT_ALL' => '<script src="sweetalert2.all.min.js"></script>',
 
         'BOOTSTRAP' => "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js?={$t}",
