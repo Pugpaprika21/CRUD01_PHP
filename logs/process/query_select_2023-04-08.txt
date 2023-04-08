@@ -243,3 +243,8 @@
 [2023-04-08 11:23:35] SELECT * FROM user_tb ORDER BY user_id DESC
 [2023-04-08 11:23:53] SELECT * FROM user_tb WHERE user_id = '551'
 [2023-04-08 11:23:55] SELECT * FROM user_tb ORDER BY user_id DESC
+[2023-04-08 11:25:44] SELECT * FROM user_tb ORDER BY user_id DESC
+[2023-04-08 11:25:54] SELECT * FROM user_tb WHERE user_id = '550'
+[2023-04-08 11:26:01] SELECT * FROM user_tb WHERE user_id = '550' ORDER BY user_id DESC
+[2023-04-08 11:26:08] SELECT * FROM user_tb WHERE user_id = '552'
+[2023-04-08 11:26:10] SELECT * FROM user_tb ORDER BY user_id DESC

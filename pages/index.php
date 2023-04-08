@@ -113,7 +113,7 @@
 </html>
 
 <script>
-    
+
     document.querySelector('#form-submit-create-users').addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -133,6 +133,8 @@
                     icon: 'success',
                     text: 'Data addition successful.',
                 }).then(res => {
+                    document.getElementById("user_name").value = "";
+                    document.getElementById("user_pass").value = "";
                     fetchUsers();
                 });
                 return;
