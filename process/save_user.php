@@ -2,6 +2,12 @@
 
 require __DIR__ . '../../src/include/include.php';
 
+$http->headers('Access-Control-Allow-Origin: *')
+     ->headers('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, PATCH, OPTIONS')
+     ->headers('Access-Control-Allow-Headers: *')
+     ->headers('Access-Control-Max-Age:', '86400')
+     ->headers('Content-type: application/json charset=utf-8');
+
 $data = $request['CLIENT'];
 
 if (str($data['action']) == 'insert') {

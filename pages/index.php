@@ -113,7 +113,6 @@
 </html>
 
 <script>
-
     document.querySelector('#form-submit-create-users').addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -128,7 +127,7 @@
             user_pass: user_pass,
             action: "insert"
         }).then(res => {
-            if (res.data.status == 200) {
+            if (res.status == 200) {
                 Swal.fire({
                     icon: 'success',
                     text: 'Data addition successful.',
@@ -155,6 +154,7 @@
         axios.get("<?= url_where('../process/show_users.php', array('action' => 'get_users')) ?>").then(res => {
             let html = "";
             let row = 0;
+            //console.log(res);
             if (res.data.length > 0) {
                 res.data.forEach(data => {
                     html += `
@@ -197,7 +197,7 @@
                                     </div>
                                 </div>
                                 &nbsp;
-                                <a class="btn btn-custom-delete" id="delete_${data.user_id}" href="../process/delete_user.php?user_id=${data.user_id}" role="button">Delete</a>
+                                <a class="btn btn-custom-delete" id="delete_${data.user_id}" onclick="deleteUserId(${data.user_id})" role="button">Delete</a>
                             </td>
                         </tr>
                     `;
@@ -211,18 +211,19 @@
     }
 
     async function editUserDataId(user_id) {
-        let edit_url = "<?= url_where('../process/edit_user.php', array('action' => 'edit_user_data', 'user_id' => '_user_id')) ?>".replace("_user_id", user_id);
-        let resp = await axios.get(edit_url);
+
+        const edit_url = "<?= url_where('../process/edit_user.php', array('action' => 'edit_user_data', 'user_id' => '_user_id')) ?>".replace("_user_id", user_id);
+        const resp = await axios.get(edit_url);
 
         if (resp.data.user_id != "") {
 
+            const user_id = resp.data.user_id
             const user_name = document.getElementById("e_user_name").value = resp.data.user_name;
             const user_pass = document.getElementById("e_user_pass").value = resp.data.user_pass;
 
             document.getElementById("form-edit-user").addEventListener('submit', (e) => {
                 e.preventDefault();
 
-                const user_id = resp.data.user_id;
                 const resp_edit = axios.put("<?= url_where('../process/edit_user_data.php', array('action' => 'edit_user_data')) ?>", {
                     user_id: user_id,
                     user_name: document.getElementById("e_user_name").value,
@@ -230,14 +231,28 @@
                 });
 
                 if (resp.status == 200) {
-                    //fetchUsers();
+
                     document.getElementById(`btn-close-edit-${user_id}`).click();
+
+                    setInterval(() => {
+                        fetchUsers();
+                    }, 1000);
                 }
             });
         }
     }
 
-    (function() {
+    async function deleteUserId(user_id) {
+
+        const delete_url = "<?= url_where('../process/delete_user.php', array('action' => 'delete_user', 'user_id' => '_user_id')) ?>".replace("_user_id", user_id);
+        const resp = await axios.get(delete_url);
+
+        if (resp.status == 200) {
+            fetchUsers();
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
         fetchUsers();
-    })();
+    });
 </script>

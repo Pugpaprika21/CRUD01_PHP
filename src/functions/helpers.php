@@ -196,10 +196,13 @@ if (!function_exists('write_log')) {
      * 
      * @param string $message
      * @param string $file
+     * @param bool $stop_write
      * @return mixed
      */
-    function write_log($message, $file = 'log.txt')
+    function write_log($message, $file = 'log.txt', $stop_write = false)
     {
+        if ($stop_write == false) return;
+
         $log = function () use ($message, $file) {
             $time = date_time('DT');
             $log = "[$time] $message\n";
