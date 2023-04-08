@@ -15,6 +15,7 @@ if (!function_exists('url_where')) {
         if (count($query_str) > 0) $params = "?";
 
         if (file_exists($path_url)) return "{$path_url}{$params}" . http_build_query($query_str, '', '&');
+        //header("HTTP/1.0 404 Not Found");
         throw new Exception("URL not found : {$path_url}", 1);
     }
 }

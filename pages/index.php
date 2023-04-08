@@ -163,8 +163,39 @@
                             <td>${data.user_pass}</td>
                             <td>${data.create_date_at}</td>
                             <td>
-                                <a class="btn btn-custom-edit" id="edit_${data.user_id}" onclick="editUserDataId(${data.user_id})" role="button">Edit</a>
-                                    &nbsp;
+                                <button type="button" class="btn btn-custom-edit" id="edit_${data.user_id}" onclick="editUserDataId(${data.user_id})" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                                    Edit
+                                </button>
+                                <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                                <button type="button" class="btn-close" id="btn-close-edit-${data.user_id}" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="form-edit-user" action="" method="post">
+                                                    <ul class="list-group list-group-flush">
+                                                        <li class="list-group-item">
+                                                            <div class="input-group mb-2 mt-2">
+                                                                <input type="text" class="form-control" id="e_user_name" name="user_name" value="" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <div class="input-group mb-2 mt-2">
+                                                                <input type="text" class="form-control" id="e_user_pass" name="user_pass" value="" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <button class="btn btn-primary w-100" type="submit">Save</button>
+                                                        </li>
+                                                    </ul>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                &nbsp;
                                 <a class="btn btn-custom-delete" id="delete_${data.user_id}" href="../process/delete_user.php?user_id=${data.user_id}" role="button">Delete</a>
                             </td>
                         </tr>
@@ -183,9 +214,25 @@
         let resp = await axios.get(edit_url);
 
         if (resp.data.user_id != "") {
-            let actionEdit = document.getElementById("form-submit-create-users");
-            actionEdit.action = "../process/edit_user_data.php";
-            console.log(actionEdit);
+
+            const user_name = document.getElementById("e_user_name").value = resp.data.user_name;
+            const user_pass = document.getElementById("e_user_pass").value = resp.data.user_pass;
+
+            document.getElementById("form-edit-user").addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const user_id = resp.data.user_id;
+                const resp_edit = axios.put("<?= url_where('../process/edit_user_data.php', array('action' => 'edit_user_data')) ?>", {
+                    user_id: user_id,
+                    user_name: document.getElementById("e_user_name").value,
+                    user_pass: document.getElementById("e_user_pass").value
+                });
+
+                if (resp.status == 200) {
+                    //fetchUsers();
+                    document.getElementById(`btn-close-edit-${user_id}`).click();
+                }
+            });
         }
     }
 
