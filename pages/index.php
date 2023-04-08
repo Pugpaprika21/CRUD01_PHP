@@ -113,9 +113,8 @@
 </html>
 
 <script>
-    const formCreateUsers = document.querySelector('#form-submit-create-users');
-
-    formCreateUsers.addEventListener('submit', (e) => {
+    
+    document.querySelector('#form-submit-create-users').addEventListener('submit', (e) => {
         e.preventDefault();
 
         const user_name = document.getElementById("user_name").value;
